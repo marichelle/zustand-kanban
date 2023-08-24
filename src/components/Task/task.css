@@ -5,12 +5,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 0.5rem;
   min-height: 5rem;
   padding: 0.5rem;
 }
 
 .bottomWrapper {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -21,7 +23,15 @@
   padding: 0.25rem 0.5rem;
 }
 
-.PLANNED {
+.deleteButton {
+  all: unset;
+  cursor: pointer;
+}
+
+.deleteButton img {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
 }
 
 .ONGOING {

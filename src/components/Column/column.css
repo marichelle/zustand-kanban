@@ -8,3 +8,23 @@
   padding: 0.5rem;
   width: 33%;
 }
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleWrapper button {
+  all: unset;
+  color: black;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  height: fit-content;
+}
+
+.titleWrapper button:hover {
+  background: var(--COLOR-GRAY-LIGHT);
+  cursor: pointer;
+}
