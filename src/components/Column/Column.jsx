@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import { useState } from 'react'
 
 import Modal from '../Modal/Modal'
@@ -6,7 +7,8 @@ import Task from '../Task/Task'
 import { useStore } from '../../store/store'
 import './column.css'
 
-function Column({ label }) {
+function Column({ status }) {
+  const [drop, setDrop] = useState(false)
   const [input, setInput] = useState('')
   const [open, setOpen] = useState(false)
   /*
@@ -15,12 +17,36 @@ function Column({ label }) {
    */
   const addTask = useStore(store => store.addTask)
   const allTasks = useStore(store => store.tasks)
-  const filteredTasks = allTasks.filter(task => task.status === label)
+  const draggedTask = useStore(store => store.draggedTask)
+  const filteredTasks = allTasks.filter(task => task.status === status)
+  const moveTask = useStore(store => store.moveTask)
+  const setDraggedTask = useStore(store => store.setDraggedTask)
 
   const handleChange = e => setInput(e.target.value)
 
+  const handleDragLeave = e => {
+    e.preventDefault()
+    setDrop(false)
+  }
+
+  const handleDragOver = e => {
+    /*
+     * Prevent opening new files, new tabs, etc.
+     * The Drag & Drop API won't react to our
+     * custom events if we don't add this.
+     */
+    e.preventDefault()
+    setDrop(true)
+  }
+
+  const handleDrop = () => {
+    moveTask(draggedTask, status)
+    setDraggedTask(null)
+    setDrop(false)
+  }
+
   const handleSubmit = () => {
-    addTask(input, label)
+    addTask(input, status)
     setInput('')
     setOpen(false)
   }
@@ -29,9 +55,14 @@ function Column({ label }) {
 
   return (
     <>
-      <div className="column">
+      <div
+        className={classNames('column', { drop })}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         <div className="titleWrapper">
-          <p>{label}</p>
+          <p>{status}</p>
           <button onClick={toggleModal}>Add</button>
         </div>
 
@@ -49,7 +80,7 @@ function Column({ label }) {
 }
 
 Column.propTypes = {
-  label: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 }
 
 export default Column

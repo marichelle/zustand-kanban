@@ -1,5 +1,15 @@
 .App {
   background: var(--COLOR-GRAY);
+  color: var(--COLOR-GRAY-LIGHT);
+  padding: 2rem;
+}
+
+h1 {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.board {
   display: flex;
   align-items: start;
   justify-content: center;
