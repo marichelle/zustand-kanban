@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware'
 
 /*
  * The set function has a second argument, false by default.
@@ -60,4 +60,21 @@ const store = set => ({
   tasks: [],
 })
 
-export const useStore = create(devtools(store))
+// custom logger middleware
+const log = config => (set, get, api) =>
+  config(
+    (...args) => {
+      console.log('🚀 -> logger:', args)
+      set(...args)
+    },
+    get,
+    api
+  )
+
+export const useStore = create(
+  log(
+    persist(devtools(store), {
+      name: 'my-kanban-store',
+    })
+  )
+)
